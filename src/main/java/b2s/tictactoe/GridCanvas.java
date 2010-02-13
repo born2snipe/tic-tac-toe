@@ -1,7 +1,9 @@
 package b2s.tictactoe;
 
 import b2s.tictactoe.trophy.TrophyContext;
-import com.gamejolt.GameJolt;
+import b2s.tictactoe.trophy.TrophyManager;
+import b2s.tictactoe.trophy.TrophyManagerListener;
+import com.gamejolt.Trophy;
 
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -12,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class GridCanvas extends Canvas implements Runnable, MouseListener, MouseMotionListener {
+public class GridCanvas extends Canvas implements Runnable, MouseListener, MouseMotionListener, TrophyManagerListener {
     private static final int TICKS_PER_SECOND = 60;
     private static final int LINE_WIDTH = 3;
     private static final Color BACKGROUND = Color.white;
@@ -21,7 +23,7 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     private boolean running;
     private long lastTime;
     private final Dimension size;
-    private final GameJolt gameJolt;
+    private final TrophyManager trophyManager;
     private BufferedImage offscreenImage;
     private Graphics2D offscreenGraphics;
     private final int boxSize;
@@ -29,17 +31,20 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     private PointToGridResolver pointToGridResolver;
     private List<Line> gridLines = new ArrayList<Line>();
     private Notification notification;
-    private TrophyContext context = new TrophyContext();
+    private final TrophyContext trophyContext;
 
-    public GridCanvas(Dimension size, GameJolt gameJolt) {
+    public GridCanvas(Dimension size, TrophyManager trophyManager, TrophyContext trophyContext) {
         this.size = size;
-        this.gameJolt = gameJolt;
-        boxSize = size.width / 3 - (LINE_WIDTH * 2);
-        setFocusable(true);
-        this.pointToGridResolver = new PointToGridResolver(size, LINE_WIDTH);
-        this.grid = new Grid();
+        this.trophyManager = trophyManager;
+        this.trophyContext = trophyContext;
         addMouseMotionListener(this);
         addMouseListener(this);
+        setFocusable(true);
+        trophyManager.addListener(this);
+        this.pointToGridResolver = new PointToGridResolver(size, LINE_WIDTH);
+        this.grid = new Grid();
+
+        boxSize = size.width / 3 - (LINE_WIDTH * 2);
 
         gridLines.add(new Line(new Point(boxSize, 0), new Point(boxSize, size.height), LINE_WIDTH));
         gridLines.add(new Line(new Point(boxSize * 2, 0), new Point(boxSize * 2, size.height), LINE_WIDTH));
@@ -72,6 +77,7 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
             g.drawImage(offscreenImage, 0, 0, size.width, size.height, null);
             g.dispose();
 
+            trophyManager.manage(trophyContext);
             try {
                 Thread.sleep(2L);
             } catch (InterruptedException err) {
@@ -150,10 +156,6 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         PointToGridResolver.GridLocation location = pointToGridResolver.resolve(e.getPoint());
         if (location != null) {
             grid.move(location.row, location.column);
-
-            if (location == PointToGridResolver.GridLocation.MID_MID) {
-                notification.show();
-            }
         }
     }
 
@@ -187,5 +189,9 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
 
     public void mouseMoved(MouseEvent e) {
 
+    }
+
+    public void trophiesAcquired(List<Trophy> trophies, TrophyContext context) {
+        notification.show();
     }
 }
