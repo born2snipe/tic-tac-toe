@@ -8,14 +8,22 @@ public class Line implements Renderable, Tickable {
     private Color color = Color.black;
     private int lineWidth = 3;
     private Point currentTo;
-    private static final int STEP = 2;
+    private static final int STEP = 10;
 
     public Line(Point from, Point to, int lineWidth) {
+        this(from, to, lineWidth, true);
+    }
+
+    public Line(Point from, Point to, int lineWidth, boolean staticLine) {
         this.from = from;
         this.to = to;
         this.lineWidth = lineWidth;
 
-        currentTo = new Point(from);
+        if (staticLine) {
+            currentTo = to;
+        } else {
+            currentTo = new Point(from);
+        }
     }
 
     public void setColor(Color color) {
