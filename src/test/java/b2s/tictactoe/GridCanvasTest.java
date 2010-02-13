@@ -24,7 +24,7 @@ public class GridCanvasTest {
         grid = mock(Grid.class);
         point = mock(Point.class);
 
-        canvas = new GridCanvas(new Dimension(300, 300));
+        canvas = new GridCanvas(new Dimension(300, 300), null);
         canvas.setGrid(grid);
         canvas.setPointToGridResolver(pointToGridResolver);
 

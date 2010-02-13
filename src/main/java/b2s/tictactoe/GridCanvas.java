@@ -1,5 +1,8 @@
 package b2s.tictactoe;
 
+import b2s.tictactoe.trophy.TrophyContext;
+import com.gamejolt.GameJolt;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -18,6 +21,7 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     private boolean running;
     private long lastTime;
     private final Dimension size;
+    private final GameJolt gameJolt;
     private BufferedImage offscreenImage;
     private Graphics2D offscreenGraphics;
     private final int boxSize;
@@ -25,9 +29,11 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     private PointToGridResolver pointToGridResolver;
     private List<Line> gridLines = new ArrayList<Line>();
     private Notification notification;
+    private TrophyContext context = new TrophyContext();
 
-    public GridCanvas(Dimension size) {
+    public GridCanvas(Dimension size, GameJolt gameJolt) {
         this.size = size;
+        this.gameJolt = gameJolt;
         boxSize = size.width / 3 - (LINE_WIDTH * 2);
         setFocusable(true);
         this.pointToGridResolver = new PointToGridResolver(size, LINE_WIDTH);
