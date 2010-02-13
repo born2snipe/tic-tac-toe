@@ -1,5 +1,6 @@
 package b2s.tictactoe;
 
+import b2s.tictactoe.trophy.TrophyManager;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -16,6 +17,7 @@ public class GridCanvasTest {
     private Grid grid;
     private PointToGridResolver pointToGridResolver;
     private Point point;
+    private TrophyManager trophyManager;
 
     @Before
     public void setUp() throws Exception {
@@ -23,8 +25,9 @@ public class GridCanvasTest {
         mouseEvent = mock(MouseEvent.class);
         grid = mock(Grid.class);
         point = mock(Point.class);
+        trophyManager = mock(TrophyManager.class);
 
-        canvas = new GridCanvas(new Dimension(300, 300), null, null);
+        canvas = new GridCanvas(new Dimension(300, 300), trophyManager, null);
         canvas.setGrid(grid);
         canvas.setPointToGridResolver(pointToGridResolver);
 
@@ -37,7 +40,7 @@ public class GridCanvasTest {
 
         canvas.mouseClicked(mouseEvent);
 
-        verify(grid).move(2, 2);
+        verify(grid).move(2, 2, 'x');
     }
 
     @Test
@@ -46,7 +49,7 @@ public class GridCanvasTest {
 
         canvas.mouseClicked(mouseEvent);
 
-        verify(grid).move(2, 1);
+        verify(grid).move(2, 1, 'x');
     }
 
     @Test
@@ -55,7 +58,7 @@ public class GridCanvasTest {
 
         canvas.mouseClicked(mouseEvent);
 
-        verify(grid).move(2, 0);
+        verify(grid).move(2, 0, 'x');
     }
 
     @Test
@@ -64,7 +67,7 @@ public class GridCanvasTest {
 
         canvas.mouseClicked(mouseEvent);
 
-        verify(grid).move(1, 2);
+        verify(grid).move(1, 2, 'x');
     }
 
     @Test
@@ -73,7 +76,7 @@ public class GridCanvasTest {
 
         canvas.mouseClicked(mouseEvent);
 
-        verify(grid).move(1, 1);
+        verify(grid).move(1, 1, 'x');
     }
 
     @Test
@@ -82,7 +85,7 @@ public class GridCanvasTest {
 
         canvas.mouseClicked(mouseEvent);
 
-        verify(grid).move(1, 0);
+        verify(grid).move(1, 0, 'x');
     }
 
     @Test
@@ -91,7 +94,7 @@ public class GridCanvasTest {
 
         canvas.mouseClicked(mouseEvent);
 
-        verify(grid).move(0, 2);
+        verify(grid).move(0, 2, 'x');
     }
 
     @Test
@@ -100,7 +103,7 @@ public class GridCanvasTest {
 
         canvas.mouseClicked(mouseEvent);
 
-        verify(grid).move(0, 1);
+        verify(grid).move(0, 1, 'x');
     }
 
     @Test
@@ -109,7 +112,7 @@ public class GridCanvasTest {
 
         canvas.mouseClicked(mouseEvent);
 
-        verify(grid).move(0, 0);
+        verify(grid).move(0, 0, 'x');
     }
 
 
