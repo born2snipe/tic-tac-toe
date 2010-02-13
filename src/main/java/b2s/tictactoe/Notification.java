@@ -21,8 +21,8 @@ public class Notification implements Renderable, Tickable {
         this.message = message;
     }
 
-    public void tick(int ticksPerSecond) {
-        if (show) {
+    public synchronized void tick(int ticksPerSecond) {
+        if (show && currentLocation != null) {
             if (isFullyVisible() && state == State.MOVING_UP) {
                 state = State.VIEWING;
                 startViewingTime = System.currentTimeMillis();
@@ -38,7 +38,7 @@ public class Notification implements Renderable, Tickable {
         }
     }
 
-    public void render(Graphics2D g) {
+    public synchronized void render(Graphics2D g) {
         if (!show) return;
         if (boxSize == null) {
             // get metrics from the graphics
@@ -50,15 +50,15 @@ public class Notification implements Renderable, Tickable {
             // calculate the size of a box to hold the text with some padding.
             boxSize = new Dimension(adv + PADDING, fontHeight + PADDING);
 
-            currentLocation = new Point(5, boxSize.height + screenSize.height);
+            currentLocation = new Point(0, boxSize.height + screenSize.height);
         }
+        g.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_ROUND));
         g.setFont(FONT);
-        g.setColor(Color.white);
+        g.setColor(new Color(38, 38, 38));
         g.fillRect(currentLocation.x, currentLocation.y, boxSize.width, boxSize.height);
-        g.setColor(Color.gray.brighter());
-        g.drawRect(currentLocation.x, currentLocation.y, boxSize.width, boxSize.height);
-        g.setColor(Color.black);
-        g.drawString(message, currentLocation.x, currentLocation.y + fontHeight + 2);
+        g.drawRect(currentLocation.x - 3, currentLocation.y, boxSize.width + 3, boxSize.height);
+        g.setColor(Color.red);
+        g.drawString(message, currentLocation.x + 2, currentLocation.y + fontHeight);
     }
 
     public void show() {

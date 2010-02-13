@@ -23,7 +23,6 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     private final int boxSize;
     private Grid grid;
     private PointToGridResolver pointToGridResolver;
-    private PointToGridResolver.GridLocation currentLocation = PointToGridResolver.GridLocation.TOP_MIDDLE;
     private List<Line> gridLines = new ArrayList<Line>();
     private Notification notification;
 
@@ -111,11 +110,6 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         drawGridLines(g);
         drawPieces(g);
         notification.render(g);
-
-        synchronized (currentLocation) {
-            g.setColor(Color.red);
-            g.drawString(currentLocation.name(), 100, 100);
-        }
     }
 
     private void drawPieces(Graphics2D g) {
@@ -186,10 +180,6 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     }
 
     public void mouseMoved(MouseEvent e) {
-        synchronized (currentLocation) {
-            PointToGridResolver.GridLocation location = pointToGridResolver.resolve(e.getPoint());
-            if (location != null) currentLocation = location;
-            else System.out.println("no idea");
-        }
+
     }
 }
