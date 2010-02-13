@@ -8,7 +8,7 @@ public class Notification implements Renderable, Tickable {
     private static final long TIME_FOR_VIEWING = 1500L;
     private static final int PADDING = 5;
     private final Dimension screenSize;
-    private final String message;
+    private String message;
     private Dimension boxSize;
     private Point currentLocation;
     private boolean show = false;
@@ -16,9 +16,8 @@ public class Notification implements Renderable, Tickable {
     private int fontHeight;
     private State state;
 
-    public Notification(Dimension screenSize, String message) {
+    public Notification(Dimension screenSize) {
         this.screenSize = screenSize;
-        this.message = message;
     }
 
     public synchronized void tick(int ticksPerSecond) {
@@ -61,11 +60,12 @@ public class Notification implements Renderable, Tickable {
         g.drawString(message, currentLocation.x + 2, currentLocation.y + fontHeight);
     }
 
-    public void show() {
+    public void show(String message) {
         show = true;
         boxSize = null;
 
         state = State.MOVING_UP;
+        this.message = message;
     }
 
     private boolean isFullyVisible() {

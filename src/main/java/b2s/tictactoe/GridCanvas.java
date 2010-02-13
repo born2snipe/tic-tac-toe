@@ -51,7 +51,7 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         gridLines.add(new Line(new Point(0, boxSize), new Point(size.width, boxSize), LINE_WIDTH));
         gridLines.add(new Line(new Point(0, boxSize * 2), new Point(size.width, boxSize * 2), LINE_WIDTH));
 
-        notification = new Notification(size, "You have achieved a new trophy!!");
+        notification = new Notification(size);
     }
 
     public void run() {
@@ -192,6 +192,6 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     }
 
     public void trophiesAcquired(List<Trophy> trophies, TrophyContext context) {
-        notification.show();
+        notification.show("Achieved " + trophies.get(0).getTitle() + " trophy");
     }
 }
