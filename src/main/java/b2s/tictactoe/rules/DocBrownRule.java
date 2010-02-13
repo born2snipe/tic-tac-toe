@@ -8,10 +8,14 @@ import com.gamejolt.Trophy;
 import java.util.List;
 
 public class DocBrownRule implements AcquiredTrophyRule {
+    private List<Trophy> trophies;
+
     public boolean acquired(TrophyContext context) {
         GameJolt gameJolt = context.get("gameJolt", GameJolt.class);
+        if (trophies == null) {
+            trophies = gameJolt.getAllTrophies();
+        }
         int achievedCount = 0;
-        List<Trophy> trophies = gameJolt.getAllTrophies();
         for (Trophy trophy : trophies) {
             if (trophy.isAchieved()) achievedCount++;
         }

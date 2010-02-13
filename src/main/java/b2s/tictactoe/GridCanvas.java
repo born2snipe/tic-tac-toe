@@ -202,7 +202,25 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
             glassPane.setVisible(true);
 
             PlayerData data = trophyContext.get("data", PlayerData.class);
-
+            if (data.lastGame != grid.state) {
+                switch (grid.state) {
+                    case CAT:
+                        data.currentCatStreak++;
+                        data.currentLosingStreak = 0;
+                        data.currentWinningStreak = 0;
+                        break;
+                    case X_WINS:
+                        data.currentWinningStreak++;
+                        data.currentLosingStreak = 0;
+                        data.currentCatStreak = 0;
+                        break;
+                    case O_WINS:
+                        data.currentLosingStreak++;
+                        data.currentCatStreak = 0;
+                        data.currentWinningStreak = 0;
+                        break;
+                }
+            }
 
             switch (grid.state) {
                 case CAT:

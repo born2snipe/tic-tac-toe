@@ -27,6 +27,7 @@ public class App extends JApplet {
             data = new PlayerData();
         }
         context.put("data", data);
+        context.put("gameJolt", gameJolt);
 
         gridCanvas = new GridCanvas(getSize(), trophyManager, context);
         setLayout(new BorderLayout());
