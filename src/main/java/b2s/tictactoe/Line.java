@@ -3,7 +3,7 @@ package b2s.tictactoe;
 import java.awt.*;
 
 
-public class Line implements Tickable {
+public class Line implements Renderable, Tickable {
     private final Point from, to;
     private Color color = Color.black;
     private int lineWidth = 3;
@@ -34,6 +34,10 @@ public class Line implements Tickable {
         } else if (isHorizontal()) {
             currentTo = new Point(currentTo.x + STEP, currentTo.y);
         }
+    }
+
+    public boolean isDone() {
+        return to.equals(currentTo);
     }
 
     private boolean isVertical() {

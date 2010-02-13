@@ -25,6 +25,7 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     private PointToGridResolver pointToGridResolver;
     private PointToGridResolver.GridLocation currentLocation = PointToGridResolver.GridLocation.TOP_MIDDLE;
     private List<Line> gridLines = new ArrayList<Line>();
+    private Notification notification;
 
     public GridCanvas(Dimension size) {
         this.size = size;
@@ -39,6 +40,8 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         gridLines.add(new Line(new Point(boxSize * 2, 0), new Point(boxSize * 2, size.height), LINE_WIDTH));
         gridLines.add(new Line(new Point(0, boxSize), new Point(size.width, boxSize), LINE_WIDTH));
         gridLines.add(new Line(new Point(0, boxSize * 2), new Point(size.width, boxSize * 2), LINE_WIDTH));
+
+        notification = new Notification(size, "You have achieved a new trophy!!");
     }
 
     public void run() {
@@ -76,6 +79,7 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         for (Line line : gridLines) {
             line.tick(TICKS_PER_SECOND);
         }
+        notification.tick(TICKS_PER_SECOND);
     }
 
     public synchronized void start() {
@@ -106,7 +110,7 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         g.fillRect(0, 0, size.width, size.height);
         drawGridLines(g);
         drawPieces(g);
-
+        notification.render(g);
 
         synchronized (currentLocation) {
             g.setColor(Color.red);
@@ -146,6 +150,10 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         PointToGridResolver.GridLocation location = pointToGridResolver.resolve(e.getPoint());
         if (location != null) {
             grid.move(location.row, location.column);
+
+            if (location == PointToGridResolver.GridLocation.MID_MID) {
+                notification.show();
+            }
         }
     }
 
