@@ -74,6 +74,7 @@ public class TrophyManagerTest {
     @Test
     public void test_manage_singleRule_TrophyAcquired() {
         Trophy trophy = new Trophy();
+        trophy.setId(123);
         when(gameJolt.getTrophy(123)).thenReturn(trophy);
         when(rule.acquired(context)).thenReturn(true);
 
@@ -82,6 +83,7 @@ public class TrophyManagerTest {
 
         verify(rule).acquired(context);
         verify(listener).trophiesAcquired(asList(trophy), context);
+        verify(gameJolt).achievedTrophy(123);
     }
 
     @Test
