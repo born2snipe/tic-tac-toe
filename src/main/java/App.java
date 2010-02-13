@@ -1,6 +1,6 @@
 import b2s.tictactoe.GridCanvas;
 import b2s.tictactoe.PlayerData;
-import b2s.tictactoe.rules.RibbonCuttingRule;
+import b2s.tictactoe.rules.*;
 import b2s.tictactoe.trophy.TrophyContext;
 import b2s.tictactoe.trophy.TrophyManager;
 import com.gamejolt.GameJolt;
@@ -38,6 +38,11 @@ public class App extends JApplet {
         TrophyManager trophyManager = new TrophyManager(gameJolt);
 
         trophyManager.registerRule(211, new RibbonCuttingRule());
+        trophyManager.registerRule(203, new CakeWalkRule());
+        trophyManager.registerRule(204, new OmgRule());
+        trophyManager.registerRule(206, new TurkeyRule());
+        trophyManager.registerRule(207, new CatLadyRule());
+        trophyManager.registerRule(210, new DocBrownRule());
 
         return trophyManager;
     }
