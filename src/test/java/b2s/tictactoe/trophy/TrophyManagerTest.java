@@ -8,6 +8,7 @@ import org.junit.Test;
 import static java.util.Arrays.asList;
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.fail;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 
@@ -56,6 +57,18 @@ public class TrophyManagerTest {
         manager.manage(context);
 
         verifyZeroInteractions(listener);
+    }
+
+    @Test
+    public void test_manage_singleRule_TrophyAlreadyAcquired() {
+        Trophy trophy = new Trophy();
+        trophy.setAchieved(true);
+        when(gameJolt.getTrophy(123)).thenReturn(trophy);
+
+        manager.registerRule(123, rule);
+        manager.manage(context);
+
+        verifyZeroInteractions(rule, listener);
     }
 
     @Test
@@ -114,6 +127,9 @@ public class TrophyManagerTest {
         verify(rule).acquired(context);
         verify(listener).trophiesAcquired(asList(trophy, trophy2), context);
         verifyNoMoreInteractions(listener);
+
+        assertTrue(trophy.isAchieved());
+        assertTrue(trophy2.isAchieved());
     }
 
     @Test

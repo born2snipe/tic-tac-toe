@@ -25,7 +25,9 @@ public class TrophyManager {
     public void manage(TrophyContext context) {
         List<Trophy> trophiesAcquired = new ArrayList<Trophy>();
         for (TrophyAndRuleHolder holder : holders.values()) {
-            if (holder.rule.acquired(context)) {
+            if (!holder.trophy.isAchieved() && holder.rule.acquired(context)) {
+                // need to tell gamejolt still
+                holder.trophy.setAchieved(true);
                 if (batchListenerNotification) {
                     trophiesAcquired.add(holder.trophy);
                 } else {
