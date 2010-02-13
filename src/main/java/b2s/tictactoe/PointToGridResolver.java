@@ -48,6 +48,15 @@ public class PointToGridResolver {
     }
 
     public static enum GridLocation {
-        TOP_LEFT, TOP_MIDDLE, TOP_RIGHT, MID_LEFT, MID_MID, MID_RIGHT, BOTTOM_LEFT, BOTTOM_MID, BOTTOM_RIGHT
+        TOP_LEFT(0, 0), TOP_MIDDLE(0, 1), TOP_RIGHT(0, 2),
+        MID_LEFT(1, 0), MID_MID(1, 1), MID_RIGHT(1, 2),
+        BOTTOM_LEFT(2, 0), BOTTOM_MID(2, 1), BOTTOM_RIGHT(2, 2);
+
+        public final int row, column;
+
+        GridLocation(int row, int column) {
+            this.row = row;
+            this.column = column;
+        }
     }
 }
