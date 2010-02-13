@@ -11,4 +11,5 @@ public class PlayerData implements Serializable {
     public int currentWinningStreak;
     public int currentLosingStreak;
     public int currentCatStreak;
+    public Grid.State lastGame;
 }

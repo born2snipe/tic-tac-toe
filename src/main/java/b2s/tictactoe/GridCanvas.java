@@ -5,16 +5,15 @@ import b2s.tictactoe.trophy.TrophyManager;
 import b2s.tictactoe.trophy.TrophyManagerListener;
 import com.gamejolt.Trophy;
 
+import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.event.MouseMotionListener;
+import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class GridCanvas extends Canvas implements Runnable, MouseListener, MouseMotionListener, TrophyManagerListener {
+public class GridCanvas extends JPanel implements Runnable, MouseListener, MouseMotionListener, TrophyManagerListener {
     private static final int TICKS_PER_SECOND = 60;
     private static final int LINE_WIDTH = 3;
     private static final Color BACKGROUND = Color.white;
@@ -32,6 +31,10 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     private List<Line> gridLines = new ArrayList<Line>();
     private Notification notification;
     private final TrophyContext trophyContext;
+    private StupidComputerPlayer cpu = new StupidComputerPlayer();
+    private boolean gameOver;
+    private Button playAgain = new Button("Play Again?");
+    private JPanel glassPane;
 
     public GridCanvas(Dimension size, TrophyManager trophyManager, TrophyContext trophyContext) {
         this.size = size;
@@ -52,6 +55,14 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         gridLines.add(new Line(new Point(0, boxSize * 2), new Point(size.width, boxSize * 2), LINE_WIDTH));
 
         notification = new Notification(size);
+
+        playAgain.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                grid.reset();
+                gameOver = false;
+                glassPane.setVisible(false);
+            }
+        });
     }
 
     public void run() {
@@ -122,6 +133,25 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         drawGridLines(g);
         drawPieces(g);
         notification.render(g);
+
+        g.setColor(Color.red);
+        g.setFont(new Font("Courier", Font.BOLD, 30));
+
+        String message = "";
+        switch (grid.state) {
+            case X_WINS:
+                message = "You Win!";
+                break;
+            case O_WINS:
+                message = "You Lose!";
+                break;
+            case CAT:
+                message = "Meow! No one wins!";
+                break;
+        }
+        if (grid.state != Grid.State.KEEP_GOING) {
+            g.drawString(message, 50, 200);
+        }
     }
 
     private void drawPieces(Graphics2D g) {
@@ -153,9 +183,39 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     }
 
     public void mouseClicked(MouseEvent e) {
+        if (gameOver) return;
         PointToGridResolver.GridLocation location = pointToGridResolver.resolve(e.getPoint());
         if (location != null) {
-            grid.move(location.row, location.column);
+            if (grid.move(location.row, location.column, 'x')) {
+                if (!grid.isGameOver()) {
+                    cpu.makeMove(grid);
+                    gameOver = grid.isGameOver();
+                } else {
+                    gameOver = true;
+                }
+            }
+        }
+
+        if (gameOver) {
+            glassPane = (JPanel) getRootPane().getGlassPane();
+            glassPane.add(playAgain);
+            glassPane.setVisible(true);
+
+            PlayerData data = trophyContext.get("data", PlayerData.class);
+
+
+            switch (grid.state) {
+                case CAT:
+                    data.cats++;
+                    break;
+                case X_WINS:
+                    data.wins++;
+                    break;
+                case O_WINS:
+                    data.losses++;
+                    break;
+            }
+            data.lastGame = grid.state;
         }
     }
 

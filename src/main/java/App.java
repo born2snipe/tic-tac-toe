@@ -5,10 +5,10 @@ import b2s.tictactoe.trophy.TrophyContext;
 import b2s.tictactoe.trophy.TrophyManager;
 import com.gamejolt.GameJolt;
 
-import java.applet.Applet;
+import javax.swing.*;
 import java.awt.*;
 
-public class App extends Applet {
+public class App extends JApplet {
 
     private GridCanvas gridCanvas;
     private GameJolt gameJolt;
