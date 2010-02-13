@@ -104,7 +104,9 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
     public void render(Graphics2D g) {
         g.setColor(BACKGROUND);
         g.fillRect(0, 0, size.width, size.height);
-        drawGrid(g);
+        drawGridLines(g);
+        drawPieces(g);
+
 
         synchronized (currentLocation) {
             g.setColor(Color.red);
@@ -112,7 +114,29 @@ public class GridCanvas extends Canvas implements Runnable, MouseListener, Mouse
         }
     }
 
-    private void drawGrid(Graphics2D g) {
+    private void drawPieces(Graphics2D g) {
+        g.setFont(new Font("Courier", Font.BOLD, 70));
+        g.setColor(Color.blue);
+        for (int row = 0; row < grid.cells.length; row++) {
+            for (int col = 0; col < grid.cells[row].length; col++) {
+                String toDraw = "";
+                switch (grid.cells[row][col]) {
+                    case ' ':
+                        break;
+                    case 'x':
+                        toDraw = "X";
+                        break;
+                    case 'o':
+                        toDraw = "O";
+                        break;
+                }
+                Point point = pointToGridResolver.resolve(row, col);
+                g.drawString(toDraw, point.x, point.y);
+            }
+        }
+    }
+
+    private void drawGridLines(Graphics2D g) {
         for (Line line : gridLines) {
             line.render(g);
         }

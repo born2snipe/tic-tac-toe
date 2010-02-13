@@ -47,6 +47,51 @@ public class PointToGridResolver {
         return null;
     }
 
+    public Point resolve(int row, int col) {
+        GridLocation match = null;
+        for (GridLocation location : GridLocation.values()) {
+            if (location.row == row && location.column == col) {
+                match = location;
+                break;
+            }
+        }
+
+        int leftLineX = cellSize + lineWidth;
+        int rightLineX = cellSize * 2 + lineWidth * 2;
+        int topLineY = cellSize + lineWidth;
+        int bottomLineY = cellSize * 2 + lineWidth * 2;
+
+        int topRowY = 60;
+        int leftColumnX = 20;
+        int middleColumnX = leftLineX + 20;
+        int rightColumnX = rightLineX + 20;
+        int middleRowY = topLineY + 60;
+        int bottomRowY = bottomLineY + 60;
+
+        switch (match) {
+            case TOP_LEFT:
+                return new Point(leftColumnX, topRowY);
+            case TOP_MIDDLE:
+                return new Point(middleColumnX, topRowY);
+            case TOP_RIGHT:
+                return new Point(rightColumnX, topRowY);
+            case MID_LEFT:
+                return new Point(leftColumnX, middleRowY);
+            case MID_MID:
+                return new Point(middleColumnX, middleRowY);
+            case MID_RIGHT:
+                return new Point(rightColumnX, middleRowY);
+            case BOTTOM_LEFT:
+                return new Point(leftColumnX, bottomRowY);
+            case BOTTOM_MID:
+                return new Point(middleColumnX, bottomRowY);
+            case BOTTOM_RIGHT:
+                return new Point(rightColumnX, bottomRowY);
+        }
+
+        return null;
+    }
+
     public static enum GridLocation {
         TOP_LEFT(0, 0), TOP_MIDDLE(0, 1), TOP_RIGHT(0, 2),
         MID_LEFT(1, 0), MID_MID(1, 1), MID_RIGHT(1, 2),
