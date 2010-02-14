@@ -134,9 +134,6 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
         drawPieces(g);
         notification.render(g);
 
-        g.setColor(Color.red);
-        g.setFont(new Font("Courier", Font.BOLD, 30));
-
         String message = "";
         switch (grid.state) {
             case X_WINS:
@@ -146,11 +143,15 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
                 message = "You Lose!";
                 break;
             case CAT:
-                message = "Meow! No one wins!";
+                message = "Meow!";
                 break;
         }
         if (grid.state != Grid.State.KEEP_GOING) {
-            g.drawString(message, 50, 200);
+            g.setColor(new Color(250, 250, 250, 200));
+            g.fillRect(0, 0, size.width, size.height);
+            g.setColor(Color.red);
+            g.setFont(new Font("Courier", Font.BOLD, 50));
+            g.drawString(message, 30, 150);
         }
     }
 
@@ -203,34 +204,23 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
 
             PlayerData data = trophyContext.get("data", PlayerData.class);
             if (data.lastGame != grid.state) {
-                switch (grid.state) {
-                    case CAT:
-                        data.currentCatStreak++;
-                        data.currentLosingStreak = 0;
-                        data.currentWinningStreak = 0;
-                        break;
-                    case X_WINS:
-                        data.currentWinningStreak++;
-                        data.currentLosingStreak = 0;
-                        data.currentCatStreak = 0;
-                        break;
-                    case O_WINS:
-                        data.currentLosingStreak++;
-                        data.currentCatStreak = 0;
-                        data.currentWinningStreak = 0;
-                        break;
-                }
+                data.currentLosingStreak = 0;
+                data.currentWinningStreak = 0;
+                data.currentCatStreak = 0;
             }
 
             switch (grid.state) {
                 case CAT:
                     data.cats++;
+                    data.currentCatStreak++;
                     break;
                 case X_WINS:
                     data.wins++;
+                    data.currentWinningStreak++;
                     break;
                 case O_WINS:
                     data.losses++;
+                    data.currentLosingStreak++;
                     break;
             }
             data.lastGame = grid.state;
@@ -270,6 +260,6 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
     }
 
     public void trophiesAcquired(List<Trophy> trophies, TrophyContext context) {
-        notification.show("Achieved " + trophies.get(0).getTitle() + " trophy");
+        notification.show("Achieved \"" + trophies.get(0).getTitle() + "\" trophy");
     }
 }

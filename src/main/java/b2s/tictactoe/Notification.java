@@ -5,7 +5,7 @@ import java.awt.*;
 
 public class Notification implements Renderable, Tickable {
     private static final Font FONT = new Font("Courier", Font.BOLD, 14);
-    private static final long TIME_FOR_VIEWING = 1500L;
+    private static final long TIME_FOR_VIEWING = 3000L;
     private static final int PADDING = 5;
     private final Dimension screenSize;
     private String message;
