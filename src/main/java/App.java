@@ -17,7 +17,7 @@ public class App extends JApplet {
     public void init() {
         gameJolt = new GameJolt(1591, "1356d9d49d9ac4b47aa8ebb700299065");
         gameJolt.setVerbose(true);
-        gameJolt.verifyUser("born2snipe", "b7286a");
+        gameJolt.verifyUser(getParameter("gjapi_username"), getParameter("gjapi_token"));
 
         TrophyManager trophyManager = initializeTrophyManager();
         TrophyContext context = new TrophyContext();
