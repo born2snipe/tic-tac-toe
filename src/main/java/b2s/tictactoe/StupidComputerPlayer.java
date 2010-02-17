@@ -4,7 +4,7 @@ import java.util.List;
 
 
 public class StupidComputerPlayer {
-    void makeMove(Grid grid) {
+    public void makeMove(Grid grid) {
         List<Grid.Position> positions = grid.getOpenSpots();
         boolean foundSpot = false;
         while (!foundSpot) {

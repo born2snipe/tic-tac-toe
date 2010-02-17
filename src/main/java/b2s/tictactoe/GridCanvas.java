@@ -31,7 +31,7 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
     private List<Line> gridLines = new ArrayList<Line>();
     private Notification notification;
     private final TrophyContext trophyContext;
-    private StupidComputerPlayer cpu = new StupidComputerPlayer();
+    private SmarterComputerPlayer cpu = new SmarterComputerPlayer();
     private boolean gameOver;
     private Button playAgain = new Button("Play Again?");
     private JPanel glassPane;
