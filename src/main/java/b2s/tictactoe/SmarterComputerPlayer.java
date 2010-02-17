@@ -57,7 +57,7 @@ public class SmarterComputerPlayer {
 
         // check top-left to lower-right
         winners.addAll(findGameWinnerInTopLeftToLowerRight(grid, 'o'));
-        winners.addAll(findGameWinnerInLowerLeftToTopRight(grid, '0'));
+        winners.addAll(findGameWinnerInLowerLeftToTopRight(grid, 'o'));
 
         return winners;
     }
