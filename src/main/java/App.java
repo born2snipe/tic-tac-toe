@@ -1,9 +1,9 @@
 import b2s.tictactoe.GridCanvas;
 import b2s.tictactoe.PlayerData;
 import b2s.tictactoe.rules.*;
-import b2s.tictactoe.trophy.TrophyContext;
-import b2s.tictactoe.trophy.TrophyManager;
 import com.gamejolt.GameJolt;
+import com.gamejolt.trophy.TrophyContext;
+import com.gamejolt.trophy.TrophyManager;
 
 import javax.swing.*;
 import java.awt.*;

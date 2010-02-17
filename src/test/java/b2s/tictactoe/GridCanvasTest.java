@@ -1,6 +1,6 @@
 package b2s.tictactoe;
 
-import b2s.tictactoe.trophy.TrophyManager;
+import com.gamejolt.trophy.TrophyManager;
 import org.junit.Before;
 import org.junit.Test;
 

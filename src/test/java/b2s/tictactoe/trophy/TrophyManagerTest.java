@@ -2,6 +2,7 @@ package b2s.tictactoe.trophy;
 
 import com.gamejolt.GameJolt;
 import com.gamejolt.Trophy;
+import com.gamejolt.trophy.*;
 import org.junit.Before;
 import org.junit.Test;
 

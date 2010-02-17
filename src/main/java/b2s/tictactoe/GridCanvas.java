@@ -1,9 +1,9 @@
 package b2s.tictactoe;
 
-import b2s.tictactoe.trophy.TrophyContext;
-import b2s.tictactoe.trophy.TrophyManager;
-import b2s.tictactoe.trophy.TrophyManagerListener;
 import com.gamejolt.Trophy;
+import com.gamejolt.trophy.TrophyContext;
+import com.gamejolt.trophy.TrophyManager;
+import com.gamejolt.trophy.TrophyManagerListener;
 
 import javax.swing.*;
 import java.awt.*;

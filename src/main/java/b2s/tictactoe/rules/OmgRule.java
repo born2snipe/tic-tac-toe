@@ -1,8 +1,8 @@
 package b2s.tictactoe.rules;
 
 import b2s.tictactoe.PlayerData;
-import b2s.tictactoe.trophy.AcquiredTrophyRule;
-import b2s.tictactoe.trophy.TrophyContext;
+import com.gamejolt.trophy.AcquiredTrophyRule;
+import com.gamejolt.trophy.TrophyContext;
 
 
 public class OmgRule implements AcquiredTrophyRule {

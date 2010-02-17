@@ -1,9 +1,9 @@
 package b2s.tictactoe.rules;
 
-import b2s.tictactoe.trophy.AcquiredTrophyRule;
-import b2s.tictactoe.trophy.TrophyContext;
 import com.gamejolt.GameJolt;
 import com.gamejolt.Trophy;
+import com.gamejolt.trophy.AcquiredTrophyRule;
+import com.gamejolt.trophy.TrophyContext;
 
 import java.util.List;
 
