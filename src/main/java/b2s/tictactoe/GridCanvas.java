@@ -132,7 +132,6 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
         g.fillRect(0, 0, size.width, size.height);
         drawGridLines(g);
         drawPieces(g);
-        notification.render(g);
 
         String message = "";
         switch (grid.state) {
@@ -153,6 +152,8 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
             g.setFont(new Font("Courier", Font.BOLD, 50));
             g.drawString(message, 30, 150);
         }
+
+        notification.render(g);
     }
 
     private void drawPieces(Graphics2D g) {
