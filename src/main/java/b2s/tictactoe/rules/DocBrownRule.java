@@ -19,6 +19,6 @@ public class DocBrownRule implements AcquiredTrophyRule {
         for (Trophy trophy : trophies) {
             if (trophy.isAchieved()) achievedCount++;
         }
-        return achievedCount == trophies.size();
+        return achievedCount == trophies.size() - 1;
     }
 }
