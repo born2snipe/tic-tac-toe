@@ -1,9 +1,12 @@
 package b2s.tictactoe;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 public class PlayerDataManager {
     private final PlayerData data;
-    private Listener listener;
+    private List<Listener> listeners = new ArrayList<Listener>();
 
     public PlayerDataManager(PlayerData data) {
         this.data = data;
@@ -13,7 +16,9 @@ public class PlayerDataManager {
         if (data.lastGame != state) {
             if (data.longestWinningStreak < data.currentWinningStreak) {
                 data.longestWinningStreak = data.currentWinningStreak;
-                listener.newWinningStreak(data.longestWinningStreak);
+                for (Listener listener : listeners) {
+                    listener.newWinningStreak(data.longestWinningStreak);
+                }
             }
 
             data.currentLosingStreak = 0;
@@ -38,8 +43,8 @@ public class PlayerDataManager {
         data.lastGame = state;
     }
 
-    public void setListener(Listener listener) {
-        this.listener = listener;
+    public void addListener(Listener listener) {
+        this.listeners.add(listener);
     }
 
     public interface Listener {

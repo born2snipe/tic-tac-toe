@@ -37,7 +37,7 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
     private JPanel glassPane;
     private PlayerDataManager playerDataManager;
 
-    public GridCanvas(Dimension size, TrophyManager trophyManager, TrophyContext trophyContext) {
+    public GridCanvas(Dimension size, TrophyManager trophyManager, TrophyContext trophyContext, PlayerDataManager playerDataManager) {
         this.size = size;
         this.trophyManager = trophyManager;
         this.trophyContext = trophyContext;
@@ -65,8 +65,8 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
             }
         });
 
-        playerDataManager = new PlayerDataManager(trophyContext.get("data", PlayerData.class));
-        playerDataManager.setListener(this);
+        this.playerDataManager = playerDataManager;
+        this.playerDataManager.addListener(this);
     }
 
     public void run() {

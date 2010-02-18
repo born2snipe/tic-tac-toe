@@ -27,7 +27,7 @@ public class GridCanvasTest {
         point = mock(Point.class);
         trophyManager = mock(TrophyManager.class);
 
-        canvas = new GridCanvas(new Dimension(300, 300), trophyManager, null);
+        canvas = new GridCanvas(new Dimension(300, 300), trophyManager, null, new PlayerDataManager(new PlayerData()));
         canvas.setGrid(grid);
         canvas.setPointToGridResolver(pointToGridResolver);
 

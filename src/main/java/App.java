@@ -1,5 +1,6 @@
 import b2s.tictactoe.GridCanvas;
 import b2s.tictactoe.PlayerData;
+import b2s.tictactoe.PlayerDataManager;
 import b2s.tictactoe.rules.*;
 import com.gamejolt.GameJolt;
 import com.gamejolt.GameJoltException;
@@ -30,10 +31,19 @@ public class App extends JApplet {
         if (data == null) {
             data = new PlayerData();
         }
+
+        PlayerDataManager playerDataManager = new PlayerDataManager(data);
+        playerDataManager.addListener(new PlayerDataManager.Listener() {
+            public void newWinningStreak(int streakLength) {
+                if (streakLength == 1) return;
+                gameJolt.userAchievedHighscore(streakLength + " game winning streak", streakLength, "");
+            }
+        });
+
         context.put("data", data);
         context.put("gameJolt", gameJolt);
 
-        gridCanvas = new GridCanvas(getSize(), trophyManager, context);
+        gridCanvas = new GridCanvas(getSize(), trophyManager, context, playerDataManager);
         setLayout(new BorderLayout());
         add(gridCanvas, BorderLayout.CENTER);
         setIgnoreRepaint(true);
