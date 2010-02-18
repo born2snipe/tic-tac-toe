@@ -31,20 +31,22 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
     private List<Line> gridLines = new ArrayList<Line>();
     private Notification notification;
     private final TrophyContext trophyContext;
+    private final boolean verifiedUser;
     private SmarterComputerPlayer cpu = new SmarterComputerPlayer();
     private boolean gameOver;
     private Button playAgain = new Button("Play Again?");
     private JPanel glassPane;
     private PlayerDataManager playerDataManager;
 
-    public GridCanvas(Dimension size, TrophyManager trophyManager, TrophyContext trophyContext, PlayerDataManager playerDataManager) {
+    public GridCanvas(Dimension size, TrophyManager trophyManager, TrophyContext trophyContext, PlayerDataManager playerDataManager, boolean verifiedUser) {
         this.size = size;
         this.trophyManager = trophyManager;
         this.trophyContext = trophyContext;
+        this.verifiedUser = verifiedUser;
         addMouseMotionListener(this);
         addMouseListener(this);
         setFocusable(true);
-        trophyManager.addListener(this);
+        if (verifiedUser) trophyManager.addListener(this);
         this.pointToGridResolver = new PointToGridResolver(size, LINE_WIDTH);
         this.grid = new Grid();
 
@@ -92,7 +94,7 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
             g.drawImage(offscreenImage, 0, 0, size.width, size.height, null);
             g.dispose();
 
-            trophyManager.manage(trophyContext);
+            if (verifiedUser) trophyManager.manage(trophyContext);
             try {
                 Thread.sleep(2L);
             } catch (InterruptedException err) {
