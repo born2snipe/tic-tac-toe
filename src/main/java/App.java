@@ -2,6 +2,7 @@ import b2s.tictactoe.GridCanvas;
 import b2s.tictactoe.PlayerData;
 import b2s.tictactoe.rules.*;
 import com.gamejolt.GameJolt;
+import com.gamejolt.GameJoltException;
 import com.gamejolt.trophy.TrophyContext;
 import com.gamejolt.trophy.TrophyManager;
 
@@ -21,8 +22,11 @@ public class App extends JApplet {
 
         TrophyManager trophyManager = initializeTrophyManager();
         TrophyContext context = new TrophyContext();
-
-        data = (PlayerData) gameJolt.getUserData("data");
+        try {
+            data = (PlayerData) gameJolt.getUserData("data");
+        } catch (GameJoltException err) {
+            // incompatible serialization
+        }
         if (data == null) {
             data = new PlayerData();
         }

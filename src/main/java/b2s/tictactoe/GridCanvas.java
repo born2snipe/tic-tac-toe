@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class GridCanvas extends JPanel implements Runnable, MouseListener, MouseMotionListener, TrophyManagerListener {
+public class GridCanvas extends JPanel implements Runnable, MouseListener, MouseMotionListener, TrophyManagerListener, PlayerDataManager.Listener {
     private static final int TICKS_PER_SECOND = 60;
     private static final int LINE_WIDTH = 3;
     private static final Color BACKGROUND = Color.white;
@@ -35,6 +35,7 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
     private boolean gameOver;
     private Button playAgain = new Button("Play Again?");
     private JPanel glassPane;
+    private PlayerDataManager playerDataManager;
 
     public GridCanvas(Dimension size, TrophyManager trophyManager, TrophyContext trophyContext) {
         this.size = size;
@@ -63,6 +64,9 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
                 glassPane.setVisible(false);
             }
         });
+
+        playerDataManager = new PlayerDataManager(trophyContext.get("data", PlayerData.class));
+        playerDataManager.setListener(this);
     }
 
     public void run() {
@@ -203,28 +207,7 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
             glassPane.add(playAgain);
             glassPane.setVisible(true);
 
-            PlayerData data = trophyContext.get("data", PlayerData.class);
-            if (data.lastGame != grid.state) {
-                data.currentLosingStreak = 0;
-                data.currentWinningStreak = 0;
-                data.currentCatStreak = 0;
-            }
-
-            switch (grid.state) {
-                case CAT:
-                    data.cats++;
-                    data.currentCatStreak++;
-                    break;
-                case X_WINS:
-                    data.wins++;
-                    data.currentWinningStreak++;
-                    break;
-                case O_WINS:
-                    data.losses++;
-                    data.currentLosingStreak++;
-                    break;
-            }
-            data.lastGame = grid.state;
+            playerDataManager.manage(grid.state);
         }
     }
 
@@ -262,5 +245,9 @@ public class GridCanvas extends JPanel implements Runnable, MouseListener, Mouse
 
     public void trophiesAcquired(List<Trophy> trophies, TrophyContext context) {
         notification.show("Achieved \"" + trophies.get(0).getTitle() + "\" trophy");
+    }
+
+    public void newWinningStreak(int streakLength) {
+        notification.show("New Winning Streak: " + streakLength + " games");
     }
 }
